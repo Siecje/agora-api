@@ -23,7 +23,9 @@ class PageSerializer(serializers.ModelSerializer):
     stylesheet = serializers.SerializerMethodField('get_stylesheet_url')
 
     def get_stylesheet_url(self, obj):
-        return settings.STATIC_URL + str(obj.id) + '.css'
+        if obj.stylesheet:
+            return settings.STATIC_URL + str(obj.id) + '.css'
+        return None
 
     class Meta:
         model = Page
