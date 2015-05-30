@@ -41,6 +41,7 @@ class PageTests(APITestCase):
 
         response = self.client.patch(url, data={'stylesheet': stylesheet}, format='multipart')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['stylesheet'], '/static/' + response.data['id'] + '.css')
 
     def test_create_page_with_stylesheet(self):
         url = reverse('page-list')
@@ -55,6 +56,7 @@ class PageTests(APITestCase):
         response = self.client.post(url, data, format='multipart')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['name'], 'Created')
+        self.assertEqual(response.data['stylesheet'], '/static/' + response.data['id'] + '.css')
 
     def test_add_comment_to_page(self):
         page = Page.objects.create(name='First', user=self.user)

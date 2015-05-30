@@ -31,6 +31,12 @@ class PageViewSet(viewsets.ModelViewSet):
         else:
             serializer.save(user=self.request.user)
 
+    def perform_update(self, serializer):
+        if self.request.data.get('stylesheet'):
+            serializer.save(stylesheet=self.request.data.get('stylesheet'), user=self.request.user)
+        else:
+            serializer.save(user=self.request.user)
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     lookup_field = 'id'
