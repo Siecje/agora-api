@@ -44,11 +44,19 @@ class Comment(Common):
         return self.text
 
     def to_JSON(self):
+        import hashlib
+        m = hashlib.md5()
+        m.update(self.user.email or '')
+
         return {
             'id': self.id,
             'text': self.text,
             'parent': self.parent.id if self.parent else None,
-            'user': self.user.id,
+            'user': {
+                'id': self.user.id,
+                'username': self.user.username,
+                'gravatar': hashlib.md5(self.user.email.lower()).hexdigest()
+            },
             'page': self.page.id,
             'children': [child.to_JSON() for child in self.children.all()]
         }
